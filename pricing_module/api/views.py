@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from xmlrpc.client import Server
 from django.shortcuts import render
 from .models import Price
@@ -12,15 +11,12 @@ from rest_framework import status
 
 @api_view(['POST'])
 def price_api(request):
-    import pdb
-    pdb.set_trace
     if request.method == 'POST':
         serializer = PriceSerializers(data=request.data)
         if serializer.is_valid():
             time = serializer.validated_data.get('TBP')
             distance = serializer.validated_data.get('DBP')
             # print(time, distance)
-            serializer.save()
             if time <= 1 :
                 tp = 1
             else:
@@ -30,6 +26,6 @@ def price_api(request):
             else:
                 dp = 3
             price = (distance*dp)+(time*tp)
-            print(price)
+            serializer.save(calc_price=price)
             return Response(price, status=status.HTTP_201_CREATED) 
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
