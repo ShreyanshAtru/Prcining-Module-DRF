@@ -7,6 +7,7 @@ Create a virtual environemnt and activate the env
   
  Install the requirements 
    pip install django
+
    pip install django_rest_framework
    
 Now run the server 
